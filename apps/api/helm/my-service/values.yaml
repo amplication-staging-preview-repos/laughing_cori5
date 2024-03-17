@@ -1,0 +1,108 @@
+# Default values for my-service. This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/NAMESPACE/IMAGE_NAME
+  pullPolicy: IfNotPresent
+  tag: latest
+
+variables:
+  configmap: 
+    BCRYPT_SALT: "10"
+    COMPOSE_PROJECT_NAME: "amp_${resourceId}"
+    PORT: "3000"
+    GRPC_CLIENT_URL_PATH: "localhost:9090"
+    MQTT_BROKER_HOST: "localhost"
+    MQTT_WEB_UI_PORT: "8080"
+    MQTT_PORT: "1883"
+    MQTT_WS_PORT: "8073"
+    MQTT_USERNAME: "admin"
+    MQTT_PASSWORD: "admin"
+    MQTT_CLIENT_ID: "broker-mqtt-cltvcfl3700maij6sp3jtblo6"
+    DB_USER: "sa"
+    DB_PASSWORD: "SqlAdminChangeMe1234!"
+    DB_PORT: "1433"
+    DB_NAME: "my-db"
+    DB_URL: "sqlserver://localhost:1433;database=my-db;user=sa;password=SqlAdminChangeMe1234!;TrustServerCertificate=true"
+    JWT_SECRET_KEY: "Change_ME!!!"
+    JWT_EXPIRATION: "2d"
+    OTEL_COLLECTOR_HOST: "localhost"
+    OTEL_COLLECTOR_PORT_GRPC: "4317"
+    OTEL_COLLECTOR_PORT_HTTP: "4318"
+    OTEL_EXPORTER_OTLP_ENDPOINT: "http://${OTEL_COLLECTOR_HOST}:${OTEL_COLLECTOR_PORT_GRPC}"
+    JAEGER_AGENT_HOST: "jaeger"
+    JAEGER_AGENT_PORT: "16686"
+    REDIS_HOST: "localhost"
+    REDIS_PORT: "6379"
+    REDIS_TTL: "5000"
+    REDIS_USERNAME: ""
+    REDIS_PASSWORD: ""
+    SUPERTOKENS_API_DOMAIN: "http://localhost:3000"
+    SUPERTOKENS_APP_NAME: "AmplicationApp"
+    SUPERTOKENS_WEBSITE_DOMAIN: "http://localhost:3001"
+    SUPERTOKENS_WEBSITE_BASE_PATH: "/auth"
+    SUPERTOKENS_API_BASE_PATH: "/api/auth"
+    SUPERTOKENS_CONNECTION_URI: "https://try.supertokens.com"
+    SUPERTOKENS_API_GATEWAY_PATH: ""
+    SUPERTOKENS_API_KEY: ""
+  secret: {}
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 3000
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: server.example.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-my-service-tls
+  #    hosts:
+  #      - server.example.com
+
+# We usually recommend not to specify default resources and to leave this as a conscious
+# choice for the user. This also increases chances charts run on environments with little
+# resources, such as Minikube. If you do want to specify resources, uncomment the following
+# lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+resources: {}
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
